@@ -49,7 +49,7 @@ class SWAT2012rev670(ModuleInterface):
         return path
 
     def get_version(self) -> str:
-        return "SWATCUP2019"
+        return "SWAT2012rev670"
 
     def windows(self) -> bool:
         return self.operational_system == OperationalSystem.WINDOWS
