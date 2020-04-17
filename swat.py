@@ -60,7 +60,7 @@ class SWAT(object):
         logger.info("Detected OS: " + self.operational_system + " " + self.architecture)
         if version == SWATVersion.SWAT2012REV670:
             if self.operational_system == OperationalSystem.LINUX.value:
-                raise ValueError("Linux not working")
+                self.wrapper = SWAT2012rev670(OperationalSystem.LINUX)
             elif self.operational_system == OperationalSystem.WINDOWS.value:
                 self.wrapper = SWAT2012rev670(OperationalSystem.WINDOWS)
 

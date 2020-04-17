@@ -59,8 +59,8 @@ class SWAT2012rev670(ModuleInterface):
 
     def run(self, path):
         if self.linux():
-            raise ValueError("Not implemented")
-            return
+            cmd = os.path.join(path, "swat.exe")
+            return subprocess.call([cmd], cwd=path, shell=True)
         if self.windows():
             cmd = os.path.join(path, "swat.exe")
             return subprocess.call([cmd], cwd=path, creationflags=subprocess.CREATE_NEW_CONSOLE)
