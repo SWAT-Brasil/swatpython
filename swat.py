@@ -53,11 +53,16 @@ class SWAT(object):
         self.executable_path = None
         self.wrapper = None
         self.executable_filename = None
+        self.project_folder_path = None
+        self.async_process = None
 
         # Select the right class for the swat version
         logger.info("Detected OS: " + self.operational_system + " " + self.architecture)
         if version == SWATVersion.SWAT2012REV670:
-            self.wrapper = SWAT2012rev670()
+            if self.operational_system == OperationalSystem.LINUX.value:
+                raise ValueError("Linux not working")
+            elif self.operational_system == OperationalSystem.WINDOWS.value:
+                self.wrapper = SWAT2012rev670(OperationalSystem.WINDOWS)
 
         logger.info("Using SWATPython module: " + self.wrapper.get_version())
 
@@ -84,6 +89,19 @@ class SWAT(object):
         self.executable_path = path
         self.executable_filename = os.path.basename(path)
         logger.debug("SWAT executable found: " + path)
+
+    def set_project_folder(self, path):
+        """ Set the project folder
+
+        Parameters
+        ----------
+        path : path to folder that should be already created
+        """
+        if not os.path.isdir(path):
+            logger.error("Project folder nof found: " + path)
+            raise ValueError("Project folder not found: " + path)
+        self.project_folder_path = path
+        logger.info("Project folder found: " + path)
 
     def load_project(self, path):
         """ Loads project
@@ -137,20 +155,48 @@ class SWAT(object):
 
     def run(self):
         """ executa o swat """
-        # run executable + self.ex
-        if self.operational_system == OperationalSystem.LINUX.value:
-            logger.debug("Running SWAT in linux " + self.executable_filename + " in " + self.working_folder_path)
-            process = subprocess.Popen(os.path.join(self.working_folder_path, self.executable_filename),
-                                       cwd=self.working_folder_path)
-            # show output
-            process.communicate()[0]
-            swat_return_code = process.returncode
-        elif self.operational_system == OperationalSystem.WINDOWS.value:
-            logger.error("run method not implement in WINDOWS")
-            raise ValueError("run method not implement in WINDOWS")
+        logger.debug("Running SWAT in folder: " + self.project_folder_path)
+        self.wrapper.run(self.project_folder_path)
+
+    def async_run(self):
+        """ executa o swat """
+        logger.debug("Running SWAT in folder: " + self.project_folder_path)
+        self.async_process = self.wrapper.async_run(self.project_folder_path)
+
+    def async_is_running(self) -> bool:
+        if self.async_process is None:
+            return False
+        elif self.async_process.poll() is None:
+            return True
         else:
-            logger.error("Unknown operational system" + self.operational_system)
-            raise ValueError("Unknown operational system" + self.operational_system)
+            return False
+
+    def async_return_code(self) -> int:
+        return self.async_process.poll()
+
+    def sufi2_run_async_kill(self):
+        if self.sufi2_async_is_running():
+            logger.debug("Found a async process running. Killing it!")
+            self.async_process.kill()
+
+    def sufi2_async_wait(self):
+        logger.debug("Waiting async")
+        self.async_process.wait()
+
+        # run executable + self.ex
+#        if self.operational_system == OperationalSystem.LINUX.value:
+#            logger.debug("Running SWAT in linux " + self.executable_filename + " in " + self.working_folder_path)
+#            process = subprocess.Popen(os.path.join(self.working_folder_path, self.executable_filename),
+#                                       cwd=self.working_folder_path)
+#            # show output
+#            process.communicate()[0]
+#            swat_return_code = process.returncode
+#        elif self.operational_system == OperationalSystem.WINDOWS.value:
+#            logger.error("run method not implement in WINDOWS")
+#            raise ValueError("run method not implement in WINDOWS")
+#        else:
+#            logger.error("Unknown operational system" + self.operational_system)
+#            raise ValueError("Unknown operational system" + self.operational_system)
 
     def read_precipitation_daily(self, filename):
         """Prints what the animals name is and what sound it makes.
@@ -169,7 +215,7 @@ class SWAT(object):
             If no sound is set for the animal or passed in as a
             parameter.
         """
-        path = os.path.join(self.working_folder_path, filename)
+        path = os.path.join(self.project_folder_path, filename)
         logger.debug("Reading file: " + path)
         return self.wrapper.read_precipitation_daily(path)
 
@@ -190,7 +236,7 @@ class SWAT(object):
             If no sound is set for the animal or passed in as a
             parameter.
         """
-        path = os.path.join(self.working_folder_path, filename)
+        path = os.path.join(self.project_folder_path, filename)
         logger.debug("Writing file: " + path)
         return self.wrapper.write_precipitation_daily(path,info,dataframe)
 
@@ -211,16 +257,16 @@ class SWAT(object):
             If no sound is set for the animal or passed in as a
             parameter.
         """
-        path = os.path.join(self.working_folder_path, filename)
+        path = os.path.join(self.project_folder_path, filename)
         logger.debug("Reading file: " + path)
         return self.wrapper.read_precipitation_sub_daily(path)
 
     def write_precipitation_sub_daily(self, filename, info, dataframe):
-        path = os.path.join(self.working_folder_path, filename)
+        path = os.path.join(self.project_folder_path, filename)
         logger.debug("Writing file: " + path)
         return self.wrapper.write_precipitation_sub_daily(path,info,dataframe)
 
     def read_output_rch(self, filename):
-        path = os.path.join(self.working_folder_path, filename)
+        path = os.path.join(self.project_folder_path, filename)
         logger.debug("Reading file: " + path)
         return self.wrapper.read_output_rch(path)

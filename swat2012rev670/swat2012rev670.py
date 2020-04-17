@@ -1,4 +1,5 @@
 import logging
+import subprocess
 from abc import ABC
 
 import numpy
@@ -6,6 +7,7 @@ import pandas as pd
 import re
 import os
 from swatpython.moduleinterface import ModuleInterface
+from swatpython.operationalsystem import OperationalSystem
 
 logger = logging.getLogger(__name__)
 
@@ -17,6 +19,9 @@ class SWAT2012rev670(ModuleInterface):
         correta é escolhida automaticamente quanto é criado o swatpython. Pelo menos é a ideia
 
     """
+
+    def __init__(self, operational_system):
+        self.operational_system = operational_system
 
     def get_version(self):
         return "swat2012rev670"
@@ -42,6 +47,32 @@ class SWAT2012rev670(ModuleInterface):
         current_path = os.path.dirname(os.path.abspath(__file__))
         path = os.path.join(current_path, "swat2012_rev670_windows")
         return path
+
+    def get_version(self) -> str:
+        return "SWATCUP2019"
+
+    def windows(self) -> bool:
+        return self.operational_system == OperationalSystem.WINDOWS
+
+    def linux(self) -> bool:
+        return self.operational_system == OperationalSystem.LINUX
+
+    def run(self, path):
+        if self.linux():
+            raise ValueError("Not implemented")
+            return
+        if self.windows():
+            cmd = os.path.join(path, "swat.exe")
+            return subprocess.call([cmd], cwd=path, creationflags=subprocess.CREATE_NEW_CONSOLE)
+
+    def async_run(self, path):
+        logger.debug("Runnnig sufi2_async_run")
+        if self.linux():
+            cmd = os.path.join(path, "swat.exe")
+            return subprocess.Popen(cmd, cwd=path, shell=True, stdout=subprocess.DEVNULL)
+        if self.windows():
+            cmd = os.path.join(path, "swat.exe")
+            return subprocess.Popen([cmd], cwd=path, creationflags=subprocess.CREATE_NEW_CONSOLE)
 
     def read_precipitation_daily(self, filename):
         """
