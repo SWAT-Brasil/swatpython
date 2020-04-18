@@ -23,6 +23,7 @@ class SWAT2012rev670(ModuleInterface):
     def __init__(self, operational_system):
         self.operational_system = operational_system
         self.current_path = os.path.dirname(os.path.abspath(__file__))
+        self.custom_swat_path = None
 
     def get_version(self):
         return "swat2012rev670"
@@ -58,14 +59,23 @@ class SWAT2012rev670(ModuleInterface):
     def linux(self) -> bool:
         return self.operational_system == OperationalSystem.LINUX
 
+    def set_custom_swat(self, path):
+        self.custom_swat_path = path;
+
     def run(self, path):
         if self.linux():
             #cmd = os.path.join(path, "swat.exe")
             cmd = os.path.join(self.current_path , "swat2012_rev670_linux")
+            if self.custom_swat_path is not None:
+                cmd = self.custom_swat_path
+                logger.debug("Using custom SWAT : " + self.custom_swat_path)
             return subprocess.call([cmd], cwd=path, shell=True)
         if self.windows():
             #cmd = os.path.join(path, "swat.exe")
             cmd = os.path.join(self.current_path, "swat2012_rev670_windows.exe")
+            if self.custom_swat_path is not None:
+                cmd = self.custom_swat_path
+                logger.debug("Using custom SWAT : " + self.custom_swat_path)
             return subprocess.call([cmd], cwd=path, creationflags=subprocess.CREATE_NEW_CONSOLE)
 
     def async_run(self, path):
@@ -73,10 +83,16 @@ class SWAT2012rev670(ModuleInterface):
         if self.linux():
             #cmd = os.path.join(path, "swat.exe")
             cmd = os.path.join(self.current_path , "swat2012_rev670_linux")
+            if self.custom_swat_path is not None:
+                cmd = self.custom_swat_path
+                logger.debug("Using custom SWAT : " + self.custom_swat_path)
             return subprocess.Popen(cmd, cwd=path, shell=True, stdout=subprocess.DEVNULL)
         if self.windows():
             #cmd = os.path.join(path, "swat.exe")
             cmd = os.path.join(self.current_path, "swat2012_rev670_windows.exe")
+            if self.custom_swat_path is not None:
+                cmd = self.custom_swat_path
+                logger.debug("Using custom SWAT : " + self.custom_swat_path)
             return subprocess.Popen([cmd], cwd=path, creationflags=subprocess.CREATE_NEW_CONSOLE)
 
     def read_precipitation_daily(self, filename):
