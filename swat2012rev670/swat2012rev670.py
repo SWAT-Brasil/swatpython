@@ -22,6 +22,7 @@ class SWAT2012rev670(ModuleInterface):
 
     def __init__(self, operational_system):
         self.operational_system = operational_system
+        self.current_path = os.path.dirname(os.path.abspath(__file__))
 
     def get_version(self):
         return "swat2012rev670"
@@ -59,19 +60,23 @@ class SWAT2012rev670(ModuleInterface):
 
     def run(self, path):
         if self.linux():
-            cmd = os.path.join(path, "swat.exe")
+            #cmd = os.path.join(path, "swat.exe")
+            cmd = os.path.join(self.current_path , "swat2012_rev670_linux")
             return subprocess.call([cmd], cwd=path, shell=True)
         if self.windows():
-            cmd = os.path.join(path, "swat.exe")
+            #cmd = os.path.join(path, "swat.exe")
+            cmd = os.path.join(self.current_path, "swat2012_rev670_windows.exe")
             return subprocess.call([cmd], cwd=path, creationflags=subprocess.CREATE_NEW_CONSOLE)
 
     def async_run(self, path):
         logger.debug("Runnnig sufi2_async_run")
         if self.linux():
-            cmd = os.path.join(path, "swat.exe")
+            #cmd = os.path.join(path, "swat.exe")
+            cmd = os.path.join(self.current_path , "swat2012_rev670_linux")
             return subprocess.Popen(cmd, cwd=path, shell=True, stdout=subprocess.DEVNULL)
         if self.windows():
-            cmd = os.path.join(path, "swat.exe")
+            #cmd = os.path.join(path, "swat.exe")
+            cmd = os.path.join(self.current_path, "swat2012_rev670_windows.exe")
             return subprocess.Popen([cmd], cwd=path, creationflags=subprocess.CREATE_NEW_CONSOLE)
 
     def read_precipitation_daily(self, filename):
