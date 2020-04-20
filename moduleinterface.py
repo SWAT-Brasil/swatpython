@@ -17,20 +17,6 @@ class ModuleInterface(ABC):
         """
         pass
 
-    @abstractmethod
-    def get_linux_64bits(self) -> str:
-        """
-        Returns the path tho swat executable in linux
-        """
-        pass
-
-    @abstractmethod
-    def get_windows_64bits(self) -> str:
-        """
-        Returns the path to swat executable in windows
-        """
-        pass
-
     def read_precipitation_daily(self, filename: str) -> Tuple[pd.DataFrame, pd.DataFrame]:
         """
         Reads the pcp files
