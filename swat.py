@@ -6,6 +6,7 @@ import platform
 from swatpython.operationalsystem import OperationalSystem
 from swatpython.swatversion import SWATVersion
 from swatpython.swat2012rev670.swat2012rev670 import SWAT2012rev670
+from swatpython.swat2012rev637.swat2012rev637 import SWAT2012rev637
 
 logger = logging.getLogger(__name__)
 
@@ -59,6 +60,13 @@ class SWAT(object):
                 self.wrapper = SWAT2012rev670(OperationalSystem.LINUX)
             elif self.operational_system == OperationalSystem.WINDOWS.value:
                 self.wrapper = SWAT2012rev670(OperationalSystem.WINDOWS)
+
+        if version == SWATVersion.SWAT2012REV637:
+            if self.operational_system == OperationalSystem.LINUX.value:
+                self.wrapper = SWAT2012rev637(OperationalSystem.LINUX)
+            elif self.operational_system == OperationalSystem.WINDOWS.value:
+                self.wrapper = SWAT2012rev637(OperationalSystem.WINDOWS)
+
 
         logger.info("Using SWATPython module: " + self.wrapper.get_version())
 
