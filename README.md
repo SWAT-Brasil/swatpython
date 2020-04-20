@@ -28,6 +28,9 @@ e o executavel correto é carrregado.
 - Aparentemente o código compilado com GFrotran não funciona corretamente, ele falha já na hora de
 ler os arquivos de dados. Não foi possível fazer o swat funcionar com nenhuma compilação feita com 
 GFortran. O SWAT é originalmente compilado com intel fortran.
+- O arquivo *Tmp1.Tmp* vem sempre com as letras maiúsculas do Windows, mas não funciona no linux,
+precisa renomear para *tmp1.tmp* para funcionar no Linux. Renomear o arquivo não deve
+impedir o funcionamento no windows, pois isso não faz diferença no windows.
 
 
 # TODO
