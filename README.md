@@ -11,8 +11,7 @@ Um interface de facil uso para automatizar processamento das variaveis de entrad
 saida do SWAT.
 
 ## Utilização
-Veja arquivo de exemplo swat_exemple.py. Projeto desenvolvido na ide pycharm TODO: 
-fazer um exemplo rapido de uso aqui
+Veja arquivo de exemplo swat_exemple.py. Projeto desenvolvido na ide pycharm.
 
 ## Estrutura
 A interface funciona baseada em módulos. Cada módulo é para uma versão específica do 
@@ -25,10 +24,16 @@ utilizada, o sistema operacional é detectado automaticamente.
 O módulo é carregado automaticamente a partir da versão informada, 
 e o executavel correto é carrregado.
 
+## Problemas conhecidos
+- Aparentemente o código compilado com GFrotran não funciona corretamente, ele falha já na hora de
+ler os arquivos de dados. Não foi possível fazer o swat funcionar com nenhuma compilação feita com 
+GFortran. O SWAT é originalmente compilado com intel fortran.
+
+
 # TODO
 - Visualização de shapes
 - Unidade de teste
--  Gerador de documentação
-- Execução assincrona do SWAT
+- Gerador de documentação
 - Leitura e escrita de arquivos importantes 
+- A versão swat2012rev637 para linux não esta funcionando. Encontrar uma versão q funcione 
 
