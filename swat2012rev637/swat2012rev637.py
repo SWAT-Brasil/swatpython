@@ -40,7 +40,7 @@ class SWAT2012rev637(ModuleInterface):
     def run(self, path):
         if self.linux():
             #cmd = os.path.join(path, "swat.exe")
-            cmd = os.path.join(self.current_path , "swat2012_rev637_linux")
+            cmd = os.path.join(self.current_path, "swat2012_rev637_linux")
             if self.custom_swat_path is not None:
                 cmd = self.custom_swat_path
                 logger.debug("Using custom SWAT : " + self.custom_swat_path)
