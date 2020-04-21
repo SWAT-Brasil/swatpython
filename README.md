@@ -38,5 +38,4 @@ impedir o funcionamento no windows, pois isso não faz diferença no windows.
 - Unidade de teste
 - Gerador de documentação
 - Leitura e escrita de arquivos importantes 
-- A versão swat2012rev637 para linux não esta funcionando. Encontrar uma versão q funcione 
 

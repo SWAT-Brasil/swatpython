@@ -39,6 +39,11 @@ class SWAT2012rev637(ModuleInterface):
         self.custom_swat_path = path;
 
     def run(self, path):
+        """
+        Runs swat and shows output.
+        :param path: to project
+        :return: return code
+        """
         if self.linux():
             #cmd = os.path.join(path, "swat.exe")
             cmd = os.path.join(self.current_path, "swat2012_rev637_linux")
