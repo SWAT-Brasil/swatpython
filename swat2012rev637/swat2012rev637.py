@@ -56,10 +56,15 @@ class SWAT2012rev637(ModuleInterface):
             if self.custom_swat_path is not None:
                 cmd = self.custom_swat_path
                 logger.debug("Using custom SWAT : " + self.custom_swat_path)
-            return subprocess.call([cmd], cwd=path, creationflags=subprocess.CREATE_NEW_CONSOLE)
+            #return subprocess.call([cmd], cwd=path, creationflags=subprocess.CREATE_NEW_CONSOLE)
+            #return subprocess.call([cmd], cwd=path)
+            process = subprocess.Popen(cmd, cwd=path, stdout=subprocess.PIPE, universal_newlines=True)
+            for line in process.stdout:
+                sys.stdout.write(line)
+            return process.returncode
 
     def async_run(self, path):
-        logger.debug("Runnnig sufi2_async_run")
+        logger.debug("Running swat_async_run")
         if self.linux():
             #cmd = os.path.join(path, "swat.exe")
             cmd = os.path.join(self.current_path , "swat2012_rev637_linux")
@@ -73,7 +78,8 @@ class SWAT2012rev637(ModuleInterface):
             if self.custom_swat_path is not None:
                 cmd = self.custom_swat_path
                 logger.debug("Using custom SWAT : " + self.custom_swat_path)
-            return subprocess.Popen([cmd], cwd=path, creationflags=subprocess.CREATE_NEW_CONSOLE)
+            #return subprocess.Popen([cmd], cwd=path, creationflags=subprocess.CREATE_NEW_CONSOLE)
+            return subprocess.Popen([cmd], cwd=path, stdout=subprocess.DEVNULL)
 
     def read_file_cio(self, filename):
         fo = open(filename, "r")
