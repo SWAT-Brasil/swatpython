@@ -132,6 +132,10 @@ class SWAT(object):
         logger.debug("Waiting async")
         self.async_process.wait()
 
+    def read_file_cio(self):
+        path = os.path.join(self.project_folder_path, 'file.cio')
+        return self.wrapper.read_file_cio(path)
+
     def read_precipitation_daily(self, filename):
         """Prints what the animals name is and what sound it makes.
 
