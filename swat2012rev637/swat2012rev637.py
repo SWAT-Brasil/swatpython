@@ -83,8 +83,8 @@ class SWAT2012rev637(ModuleInterface):
             if self.custom_swat_path is not None:
                 cmd = self.custom_swat_path
                 logger.debug("Using custom SWAT : " + self.custom_swat_path)
-            #return subprocess.Popen([cmd], cwd=path, creationflags=subprocess.CREATE_NEW_CONSOLE)
-            return subprocess.Popen([cmd], cwd=path, stdout=subprocess.DEVNULL)
+            #return subprocess.Popen([cmd], cwd=path, stdout=subprocess.DEVNULL)
+            return subprocess.Popen([cmd], cwd=path, creationflags=subprocess.CREATE_NEW_CONSOLE)
 
     def read_file_cio(self, filename):
         fo = open(filename, "r")
