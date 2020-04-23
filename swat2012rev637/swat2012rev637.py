@@ -91,6 +91,7 @@ class SWAT2012rev637(ModuleInterface):
     def set_permissions(self):
         """
         Sets proper file permissions for execution under linux. Colab requires that
+        beacuse it does not get permission from git
         :return:
         """
         if self.linux():
