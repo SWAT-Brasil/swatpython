@@ -53,7 +53,8 @@ class SWAT2012rev637(ModuleInterface):
                 cmd = self.custom_swat_path
                 logger.debug("Using custom SWAT : " + self.custom_swat_path)
             #return subprocess.call([cmd], cwd=path, shell=True)
-            process = subprocess.Popen(cmd, cwd=path, stdout=subprocess.PIPE, universal_newlines=True)
+            process = subprocess.Popen(cmd, cwd=path, stderr=subprocess.STDOUT,
+                                       stdout=subprocess.PIPE, universal_newlines=True)
             for line in process.stdout:
                 sys.stdout.write(line)
             return process.returncode
