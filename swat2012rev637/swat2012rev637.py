@@ -1,4 +1,5 @@
 import logging
+import stat
 import subprocess
 import sys
 from abc import ABC
@@ -25,6 +26,7 @@ class SWAT2012rev637(ModuleInterface):
         self.operational_system = operational_system
         self.current_path = os.path.dirname(os.path.abspath(__file__))
         self.custom_swat_path = None
+        self.set_permissions()
 
     def get_version(self):
         return "swat2012rev637"
@@ -85,6 +87,16 @@ class SWAT2012rev637(ModuleInterface):
                 logger.debug("Using custom SWAT : " + self.custom_swat_path)
             #return subprocess.Popen([cmd], cwd=path, stdout=subprocess.DEVNULL)
             return subprocess.Popen([cmd], cwd=path, creationflags=subprocess.CREATE_NEW_CONSOLE)
+
+    def set_permissions(self):
+        """
+        Sets proper file permissions for execution under linux. Colab requires that
+        :return:
+        """
+        if self.linux():
+            # Execution permission
+            logger.debug("Setting files permission")
+            os.chmod(os.path.join(self.current_path, "swat2012_rev637_linux"), stat.S_IXOTH)
 
     def read_file_cio(self, filename):
         fo = open(filename, "r")
