@@ -96,7 +96,7 @@ class SWAT2012rev637(ModuleInterface):
         """
         if self.linux():
             # Execution permission
-            logger.debug("Setting files permission")
+            logger.debug("Setting files permission for linux")
             os.chmod(os.path.join(self.current_path, "swat2012_rev637_linux"), stat.S_IXOTH)
 
     def read_file_cio(self, filename):
